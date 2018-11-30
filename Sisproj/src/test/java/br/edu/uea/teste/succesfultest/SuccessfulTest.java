@@ -19,8 +19,8 @@ public class SuccessfulTest {
 	private static final String URL = "http://sisproj1.uea.edu.br/index.php?dest=roston";
 	private static final int TIMEOUT = 25; // seconds
 	
-	private static final String USERNAME = "rcm.eng";
-	private static final String PASSWORD = "01174741260";
+	private static final String USERNAME = "";
+	private static final String PASSWORD = "";
 	
 	private static final String EXPECTED_USER = "1315208157";
 	private static final String EXPECTED_NAME = "Rodrigo da Costa Moraes";

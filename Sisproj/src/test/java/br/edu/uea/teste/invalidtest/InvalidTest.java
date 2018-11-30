@@ -20,8 +20,8 @@ WebDriver driver;
 	private static final String URL = "http://sisproj1.uea.edu.br/index.php?dest=roston";
 	private static final int TIMEOUT = 25; // seconds
 	
-	private static final String USERNAME = "rcm.eng";
-	private static final String PASSWORD = "01174741260";
+	private static final String USERNAME = "";
+	private static final String PASSWORD = "";
 	
 	private static final String EXPECTED_MESSAGE = "Erro na autenticação.";
 	private static final String EXPECTED_MESSAGE_LOGIN = "Preencha o campo LOGIN!";
@@ -156,6 +156,24 @@ WebDriver driver;
 		driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
 		
 		driver.findElement(By.id("pwd")).sendKeys("123456789");
+		driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
+
+		driver.findElement(By.id("imgSbmt")).click();
+		driver.manage().timeouts().pageLoadTimeout(TIMEOUT, TimeUnit.SECONDS);		
+	
+		WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
+        wait.until(ExpectedConditions.alertIsPresent());
+        Alert alert = driver.switchTo().alert();
+		
+        assertEquals(alert.getText(), EXPECTED_MESSAGE_LOGIN);
+	}
+	
+	@Test
+	public void testLoginBlankPasswordBlank() {
+		driver.findElement(By.id("user")).sendKeys("");
+		driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
+		
+		driver.findElement(By.id("pwd")).sendKeys("");
 		driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
 
 		driver.findElement(By.id("imgSbmt")).click();
