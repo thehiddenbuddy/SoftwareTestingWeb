@@ -13,48 +13,50 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class SuccessfulTest {
 	
-	//Sistema web online
-	private String url = "https://www.linkcorreios.com.br/";
-	//ou
-	//Copia da pagina web desejada, para rodar localmente
-	//private String url = "localhost:8080/Rastreamento";
 	
 	WebDriver driver;
-	private String inputCodigoValido = "OG206681041BR";
-	private String resultadoEsperado = "Data / Hora";
-	private String resultadoObtidoTeste = null;
+	
+	private static final String URL = "http://sisproj1.uea.edu.br/index.php?dest=roston";
+	private static final int TIMEOUT = 25; // seconds
+	
+	private static final String USERNAME = "rcm.eng";
+	private static final String PASSWORD = "01174741260";
+	
+	private static final String EXPECTED_USER = "1315208157";
+	private static final String EXPECTED_NAME = "Rodrigo da Costa Moraes";
+	private static final String EXPECTED_EMAIL = "rcm.eng@uea.edu.br";	
 	
 	@Before
 	public void inicia() throws Throwable {
-		System.setProperty("webdriver.chrome.driver",
-				"chromedriver");
+		System.setProperty("webdriver.chrome.driver", "chromedriver");
 		driver = new ChromeDriver();
-		driver.get(url);
-		driver.manage().timeouts().implicitlyWait(25,
-				TimeUnit.SECONDS);
+		driver.get(URL);
+		driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
 	}
 	
 	@After
     public void tearDownTest(){
-		driver.close();		//Fecha a janela do navegador
+		driver.close();
     }
 	
 	@Test
 	public void testaConsultaCodigoValido() {
-		driver.findElement(By.id("id")).sendKeys(inputCodigoValido);
-		driver.manage().timeouts().implicitlyWait(25,
-				TimeUnit.SECONDS);
-
-		driver.findElement(By.className("btn-primary")).click();
-		driver.manage().timeouts().implicitlyWait(25,
-				TimeUnit.SECONDS);
-		resultadoObtidoTeste = 
-				driver.findElement(By.tagName("table")).getText();
-		driver.manage().timeouts().implicitlyWait(25,
-				TimeUnit.SECONDS);
+		driver.findElement(By.id("user")).sendKeys(USERNAME);
+		driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
 		
-		System.out.println(resultadoObtidoTeste);
-		assertEquals(1, 1);
-	}
+		driver.findElement(By.id("pwd")).sendKeys(PASSWORD);
+		driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
 
+		driver.findElement(By.id("imgSbmt")).click();
+		driver.manage().timeouts().pageLoadTimeout(TIMEOUT, TimeUnit.SECONDS);		
+		
+		String user = driver.findElement(By.id("usuario")).getAttribute("value");
+		assertEquals(user, EXPECTED_USER);
+		
+		String name = driver.findElement(By.id("nome")).getAttribute("value");
+		assertEquals(name, EXPECTED_NAME);
+		
+		String email = driver.findElement(By.id("email")).getAttribute("value");
+		assertEquals(email, EXPECTED_EMAIL);
+	}
 }
